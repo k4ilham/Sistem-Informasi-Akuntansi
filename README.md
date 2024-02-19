@@ -61,8 +61,138 @@ Gunakan perintah berikut untuk membuat model dan migrasi untuk setiap entitas:
     ```
 
     ```
+        Schema::create('barang', function (Blueprint $table){
+            $table->string('kd_brg',5)->primary();
+            $table->string('nm_brg',5);
+            $table->integer('harga');
+            $table->integer('stok');
+        });
+    ```  
+
+    ```
+        Schema::create('akun', function (Blueprint $table) {
+            $table->string('no_akun',5)->primary();
+            $table->string('nm_akun',25);
+        });
+    ```
+
+    ```
+        Schema::create('supplier', function (Blueprint $table){
+            $table->string('kd_supp',5)->primary();
+            $table->string('nm_supp',25);
+            $table->string('alamat',50);
+            $table->string('telepon',13);
+        });  
+    ```
+
+    ```
+        Schema::create('pemesanan', function (Blueprint $table) {
+            $table->string('no_pesan', 14)->primary();
+            $table->date('tgl_pesan');
+            $table->integer('total');
+            $table->string('kd_supp', 5);
+        });    
+    ```
+
+    ```
+        Schema::create('setting', function (Blueprint $table) {
+            $table->string('id_setting',5)->primary();
+            $table->string('no_akun',5);
+            $table->string('nama_transaksi',20);
+        });    
+    ```
+
+    ```
+        Schema::create('detail_pesan', function (Blueprint $table) {
+            $table->string('no_pesan', 14);
+            $table->string('kd_brg', 5);
+            $table->integer('qty_pesan');
+            $table->integer('subtotal');
+        });    
+    ```
+
+
+    ```
+         Schema::create('temp_pemesanan', function (Blueprint $table) {
+            $table->string('kd_brg', 5);
+            $table->integer('qty_pesan');
+        });   
+    ```
+
+    ```
+        Schema::create('pembelian', function (Blueprint $table) {
+            $table->string('no_beli',14)->primary();
+            $table->date('tgl_beli');
+            $table->string('no_faktur',14);
+            $table->integer('total_beli');
+            $table->string('no_pesan',14);
+        });    
+    ```
+
+    ```
+        Schema::create('detail_pembelian', function (Blueprint $table) {
+            $table->string('no_beli',14);
+            $table->string('kd_brg',5);
+            $table->integer('qty_beli');
+            $table->integer('sub_beli');
+        });   
+    ```
+
+    ```
+         Schema::create('detail_retur', function (Blueprint $table) {
+            $table->string('no_retur',14);
+            $table->string('kd_brg',5);
+            $table->integer('qty_retur');
+            $table->integer('sub_retur');
+        });   
+    ```
+
+    ```
+         Schema::create('retur', function (Blueprint $table) {
+            $table->string('no_retur',14)->primary();
+            $table->date('tgl_retur');
+            $table->integer('total_retur');
+        });   
+    ```
+
+    ```
+         Schema::create('jurnal', function (Blueprint $table) {
+            $table->string('no_jurnal', 14)->primary();
+            $table->date('tgl_jurnal');
+            $table->text('keterangan');
+            $table->string('no_akun', 5);
+            $table->integer('debet');
+            $table->integer('kredit');
+        });   
+    ```
+
+    ```
+         DB::unprepared('
+        CREATE TRIGGER clear_tem_pesan AFTER INSERT ON detail_pesan
+        FOR EACH ROW 
+        BEGIN
+            DELETE FROM temp_pemesanan;
+        END
+        ');   
+    ```
+
+    ```
+        DB::unprepared('
+            CREATE TRIGGER update_stok after INSERT ON detail_pembelian
+            FOR EACH ROW BEGIN
+                UPDATE barang
+                    SET stok = stok + NEW.qty_beli
+                WHERE
+                    kd_brg = NEW.kd_brg;
+            END
+        ');    
+    ```
+    Setelah menjalankan perintah di atas, Anda dapat melakukan migrasi dengan perintah:
+
+    ```
     php artisan migrate:refresh --seed
     ```
+    Untuk membuat view, jalankan query SQL berikut pada database Anda:
 
     ```
     CREATE VIEW `view_temp_pesan` AS SELECT `temp_pemesanan`.`kd_brg` AS 
