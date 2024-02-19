@@ -32,7 +32,7 @@ Ubah file `.env` dengan konfigurasi berikut:
 
 ### Pembuatan Model dan Migrasi
 
-Gunakan perintah berikut untuk membuat model dan migrasi untuk setiap entitas:
+1. Gunakan perintah berikut untuk membuat model dan migrasi untuk setiap entitas:
 
     php artisan make:model Barang -m
     php artisan make:model Supplier -m
@@ -51,15 +51,15 @@ Gunakan perintah berikut untuk membuat model dan migrasi untuk setiap entitas:
     php artisan make:model Beli
     php artisan make:model Laporan
 
-Membuat trigger
+2. Membuat trigger
 
     php artisan make:migration trigger_bersih_tempesan
     php artisan make:migration trigger_tambah
 
 
-Membuat Migration
+### Membuat Migration
 
-barang
+1. barang
 
         Schema::create('barang', function (Blueprint $table){
             $table->string('kd_brg',5)->primary();
@@ -68,14 +68,14 @@ barang
             $table->integer('stok');
         }); 
 
-akun
+2. akun
 
         Schema::create('akun', function (Blueprint $table) {
             $table->string('no_akun',5)->primary();
             $table->string('nm_akun',25);
         });
 
-supplier
+3. supplier
 
         Schema::create('supplier', function (Blueprint $table){
             $table->string('kd_supp',5)->primary();
@@ -84,7 +84,7 @@ supplier
             $table->string('telepon',13);
         });  
 
-pemesanan
+4. pemesanan
 
         Schema::create('pemesanan', function (Blueprint $table) {
             $table->string('no_pesan', 14)->primary();
@@ -93,7 +93,7 @@ pemesanan
             $table->string('kd_supp', 5);
         });    
 
-setting
+5. setting
 
         Schema::create('setting', function (Blueprint $table) {
             $table->string('id_setting',5)->primary();
@@ -101,7 +101,7 @@ setting
             $table->string('nama_transaksi',20);
         });    
 
-detail_pesan
+6. detail_pesan
 
         Schema::create('detail_pesan', function (Blueprint $table) {
             $table->string('no_pesan', 14);
@@ -110,14 +110,14 @@ detail_pesan
             $table->integer('subtotal');
         });    
 
-temp_pemesanan
+7. temp_pemesanan
 
          Schema::create('temp_pemesanan', function (Blueprint $table) {
             $table->string('kd_brg', 5);
             $table->integer('qty_pesan');
         });   
 
-pembelian
+8. pembelian
 
         Schema::create('pembelian', function (Blueprint $table) {
             $table->string('no_beli',14)->primary();
@@ -127,7 +127,7 @@ pembelian
             $table->string('no_pesan',14);
         });    
 
-detail_pembelian
+9. detail_pembelian
 
 
         Schema::create('detail_pembelian', function (Blueprint $table) {
@@ -138,7 +138,7 @@ detail_pembelian
         });   
 
 
-detail_retur
+10. detail_retur
 
          Schema::create('detail_retur', function (Blueprint $table) {
             $table->string('no_retur',14);
@@ -147,7 +147,7 @@ detail_retur
             $table->integer('sub_retur');
         });   
 
-retur
+11. retur
 
          Schema::create('retur', function (Blueprint $table) {
             $table->string('no_retur',14)->primary();
@@ -155,7 +155,7 @@ retur
             $table->integer('total_retur');
         });   
 
-jurnal
+12. jurnal
 
          Schema::create('jurnal', function (Blueprint $table) {
             $table->string('no_jurnal', 14)->primary();
@@ -166,9 +166,9 @@ jurnal
             $table->integer('kredit');
         });   
 
-membuat trigger
+### membuat trigger
 
-clear_tem_pesan
+1. clear_tem_pesan
 
          DB::unprepared('
         CREATE TRIGGER clear_tem_pesan AFTER INSERT ON detail_pesan
@@ -178,7 +178,7 @@ clear_tem_pesan
         END
         ');   
 
--detail_pembelian
+2. detail_pembelian
 
         DB::unprepared('
             CREATE TRIGGER after  INSERT ON detail_pembelian
@@ -195,7 +195,7 @@ Setelah menjalankan perintah di atas, Anda dapat melakukan migrasi dengan perint
 
     php artisan migrate:refresh --seed
 
-Untuk membuat view, jalankan query SQL berikut pada database Anda:
+### Membuat view, jalankan query SQL berikut pada database Anda:
 
 temp_pemesanan
 
@@ -236,6 +236,10 @@ lap_stok
     `retur` from ((`barang` join `detail_retur`) join `detail_pembelian`) where 
     `barang`.`kd_brg` = `detail_retur`.`kd_brg` and `barang`.`kd_brg` = 
     `detail_pembelian`.`kd_brg` group by `barang`.`kd_brg`) ;
+
+## Pertemuan 3
+
+
 
 
 
