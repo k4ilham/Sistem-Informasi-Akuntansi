@@ -19,14 +19,14 @@
 
 ### Konfigurasi Database
 
-Nama Database: `dbsia2`
+Nama Database: `db_sia2`
 
 Ubah file `.env` dengan konfigurasi berikut:
 
     DB_CONNECTION=mysql
     DB_HOST=127.0.0.1
     DB_PORT=3306
-    DB_DATABASE=dbsia2
+    DB_DATABASE=db_sia2
     DB_USERNAME=root
     DB_PASSWORD=
 
@@ -59,7 +59,7 @@ Membuat trigger
 
 Membuat Migration
 
--barang
+barang
 
         Schema::create('barang', function (Blueprint $table){
             $table->string('kd_brg',5)->primary();
@@ -68,14 +68,14 @@ Membuat Migration
             $table->integer('stok');
         }); 
 
--akun
+akun
 
         Schema::create('akun', function (Blueprint $table) {
             $table->string('no_akun',5)->primary();
             $table->string('nm_akun',25);
         });
 
--supplier
+supplier
 
         Schema::create('supplier', function (Blueprint $table){
             $table->string('kd_supp',5)->primary();
@@ -84,7 +84,7 @@ Membuat Migration
             $table->string('telepon',13);
         });  
 
--pemesanan
+pemesanan
 
         Schema::create('pemesanan', function (Blueprint $table) {
             $table->string('no_pesan', 14)->primary();
@@ -93,7 +93,7 @@ Membuat Migration
             $table->string('kd_supp', 5);
         });    
 
--setting
+setting
 
         Schema::create('setting', function (Blueprint $table) {
             $table->string('id_setting',5)->primary();
@@ -101,7 +101,7 @@ Membuat Migration
             $table->string('nama_transaksi',20);
         });    
 
--detail_pesan
+detail_pesan
 
         Schema::create('detail_pesan', function (Blueprint $table) {
             $table->string('no_pesan', 14);
@@ -110,14 +110,14 @@ Membuat Migration
             $table->integer('subtotal');
         });    
 
--temp_pemesanan
+temp_pemesanan
 
          Schema::create('temp_pemesanan', function (Blueprint $table) {
             $table->string('kd_brg', 5);
             $table->integer('qty_pesan');
         });   
 
--pembelian
+pembelian
 
         Schema::create('pembelian', function (Blueprint $table) {
             $table->string('no_beli',14)->primary();
@@ -127,7 +127,7 @@ Membuat Migration
             $table->string('no_pesan',14);
         });    
 
--detail_pembelian
+detail_pembelian
 
 
         Schema::create('detail_pembelian', function (Blueprint $table) {
@@ -138,7 +138,7 @@ Membuat Migration
         });   
 
 
--detail_retur
+detail_retur
 
          Schema::create('detail_retur', function (Blueprint $table) {
             $table->string('no_retur',14);
@@ -147,7 +147,7 @@ Membuat Migration
             $table->integer('sub_retur');
         });   
 
--retur
+retur
 
          Schema::create('retur', function (Blueprint $table) {
             $table->string('no_retur',14)->primary();
@@ -155,7 +155,7 @@ Membuat Migration
             $table->integer('total_retur');
         });   
 
--jurnal
+jurnal
 
          Schema::create('jurnal', function (Blueprint $table) {
             $table->string('no_jurnal', 14)->primary();
@@ -166,9 +166,9 @@ Membuat Migration
             $table->integer('kredit');
         });   
 
--membuat trigger
+membuat trigger
 
--clear_tem_pesan
+clear_tem_pesan
 
          DB::unprepared('
         CREATE TRIGGER clear_tem_pesan AFTER INSERT ON detail_pesan
@@ -178,10 +178,10 @@ Membuat Migration
         END
         ');   
 
--after
+-detail_pembelian
 
         DB::unprepared('
-            CREATE TRIGGER after after INSERT ON detail_pembelian
+            CREATE TRIGGER after  INSERT ON detail_pembelian
             FOR EACH ROW BEGIN
                 UPDATE barang
                     SET stok = stok + NEW.qty_beli
@@ -197,7 +197,7 @@ Setelah menjalankan perintah di atas, Anda dapat melakukan migrasi dengan perint
 
 Untuk membuat view, jalankan query SQL berikut pada database Anda:
 
--after
+temp_pemesanan
 
     CREATE VIEW `after` AS SELECT `temp_pemesanan`.`kd_brg` AS 
     `kd_brg`, concat(`barang`.`nm_brg`,`barang`.`harga`) 
@@ -205,7 +205,7 @@ Untuk membuat view, jalankan query SQL berikut pada database Anda:
     `temp_pemesanan`.`qty_pesan` AS `sub_total` FROM (`temp_pemesanan` join 
     `barang`) WHERE `temp_pemesanan`.`kd_brg` = `barang`.`kd_brg` ;
 
--tampil_pemesanan
+tampil_pemesanan
 
     CREATE VIEW `tampil_pemesanan` AS SELECT `detail_pesan`.`kd_brg` AS `kd_brg`, 
     `detail_pesan`.`no_pesan` AS `no_pesan`, `barang`.`nm_brg` AS `nm_brg`, 
@@ -213,7 +213,7 @@ Untuk membuat view, jalankan query SQL berikut pada database Anda:
     FROM (`barang` join `detail_pesan`) WHERE `detail_pesan`.`kd_brg` = 
     `barang`.`kd_brg` ;
 
--tampil_pembelian
+tampil_pembelian
 
     CREATE VIEW `tampil_pembelian` AS (select `barang`.`kd_brg` AS 
     `kd_brg`,`detail_pembelian`.`no_beli` AS `no_beli`,`barang`.`nm_brg` AS 
@@ -221,14 +221,14 @@ Untuk membuat view, jalankan query SQL berikut pada database Anda:
     (`barang` join `detail_pembelian`) where `barang`.`kd_brg` = 
     `detail_pembelian`.`kd_brg`) ;
 
--lap_jurnal
+lap_jurnal
 
     CREATE VIEW `lap_jurnal` AS SELECT `akun`.`nm_akun` AS `nm_akun`, 
     `jurnal`.`tgl_jurnal` AS `tgl`, sum(`jurnal`.`debet`) AS `debet`, sum(`jurnal`.`kredit`) AS 
     `kredit` FROM (`akun` join `jurnal`) WHERE `akun`.`no_akun` = `jurnal`.`no_akun` 
     GROUP BY `jurnal`.`no_jurnal` ;
 
--lap_stok
+lap_stok
 
     CREATE VIEW `lap_stok` AS (select `barang`.`kd_brg` AS `kd_brg`,`barang`.`nm_brg` 
     AS `nm_brg`,`barang`.`harga` AS `harga`,`barang`.`stok` AS 
