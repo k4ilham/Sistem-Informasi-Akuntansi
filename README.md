@@ -55,10 +55,16 @@ Gunakan perintah berikut untuk membuat model dan migrasi untuk setiap entitas:
     php artisan make:model Laporan
     ```
 
+Membuat trigger
+
     ```
     php artisan make:migration trigger_bersih_tempesan
     php artisan make:migration trigger_tambah
     ```
+
+Membuat Migration
+
+-barang
 
     ```
         Schema::create('barang', function (Blueprint $table){
@@ -69,12 +75,16 @@ Gunakan perintah berikut untuk membuat model dan migrasi untuk setiap entitas:
         });
     ```  
 
+-akun
+
     ```
         Schema::create('akun', function (Blueprint $table) {
             $table->string('no_akun',5)->primary();
             $table->string('nm_akun',25);
         });
     ```
+
+-supplier
 
     ```
         Schema::create('supplier', function (Blueprint $table){
@@ -85,6 +95,8 @@ Gunakan perintah berikut untuk membuat model dan migrasi untuk setiap entitas:
         });  
     ```
 
+-pemesanan
+
     ```
         Schema::create('pemesanan', function (Blueprint $table) {
             $table->string('no_pesan', 14)->primary();
@@ -94,6 +106,8 @@ Gunakan perintah berikut untuk membuat model dan migrasi untuk setiap entitas:
         });    
     ```
 
+-setting
+
     ```
         Schema::create('setting', function (Blueprint $table) {
             $table->string('id_setting',5)->primary();
@@ -102,6 +116,7 @@ Gunakan perintah berikut untuk membuat model dan migrasi untuk setiap entitas:
         });    
     ```
 
+-detail_pesan
     ```
         Schema::create('detail_pesan', function (Blueprint $table) {
             $table->string('no_pesan', 14);
@@ -111,6 +126,7 @@ Gunakan perintah berikut untuk membuat model dan migrasi untuk setiap entitas:
         });    
     ```
 
+-temp_pemesanan
 
     ```
          Schema::create('temp_pemesanan', function (Blueprint $table) {
@@ -118,6 +134,8 @@ Gunakan perintah berikut untuk membuat model dan migrasi untuk setiap entitas:
             $table->integer('qty_pesan');
         });   
     ```
+
+-pembelian
 
     ```
         Schema::create('pembelian', function (Blueprint $table) {
@@ -128,6 +146,7 @@ Gunakan perintah berikut untuk membuat model dan migrasi untuk setiap entitas:
             $table->string('no_pesan',14);
         });    
     ```
+-detail_pembelian
 
     ```
         Schema::create('detail_pembelian', function (Blueprint $table) {
@@ -138,6 +157,8 @@ Gunakan perintah berikut untuk membuat model dan migrasi untuk setiap entitas:
         });   
     ```
 
+-detail_retur
+
     ```
          Schema::create('detail_retur', function (Blueprint $table) {
             $table->string('no_retur',14);
@@ -147,6 +168,8 @@ Gunakan perintah berikut untuk membuat model dan migrasi untuk setiap entitas:
         });   
     ```
 
+-retur
+
     ```
          Schema::create('retur', function (Blueprint $table) {
             $table->string('no_retur',14)->primary();
@@ -154,6 +177,8 @@ Gunakan perintah berikut untuk membuat model dan migrasi untuk setiap entitas:
             $table->integer('total_retur');
         });   
     ```
+
+-jurnal
 
     ```
          Schema::create('jurnal', function (Blueprint $table) {
@@ -166,6 +191,10 @@ Gunakan perintah berikut untuk membuat model dan migrasi untuk setiap entitas:
         });   
     ```
 
+-membuat trigger
+
+-clear_tem_pesan
+
     ```
          DB::unprepared('
         CREATE TRIGGER clear_tem_pesan AFTER INSERT ON detail_pesan
@@ -176,9 +205,11 @@ Gunakan perintah berikut untuk membuat model dan migrasi untuk setiap entitas:
         ');   
     ```
 
+-after
+
     ```
         DB::unprepared('
-            CREATE TRIGGER update_stok after INSERT ON detail_pembelian
+            CREATE TRIGGER after after INSERT ON detail_pembelian
             FOR EACH ROW BEGIN
                 UPDATE barang
                     SET stok = stok + NEW.qty_beli
@@ -187,20 +218,27 @@ Gunakan perintah berikut untuk membuat model dan migrasi untuk setiap entitas:
             END
         ');    
     ```
-    Setelah menjalankan perintah di atas, Anda dapat melakukan migrasi dengan perintah:
+
+Setelah menjalankan perintah di atas, Anda dapat melakukan migrasi dengan perintah:
+
 
     ```
     php artisan migrate:refresh --seed
     ```
-    Untuk membuat view, jalankan query SQL berikut pada database Anda:
+
+Untuk membuat view, jalankan query SQL berikut pada database Anda:
+
+-after
 
     ```
-    CREATE VIEW `view_temp_pesan` AS SELECT `temp_pemesanan`.`kd_brg` AS 
+    CREATE VIEW `after` AS SELECT `temp_pemesanan`.`kd_brg` AS 
     `kd_brg`, concat(`barang`.`nm_brg`,`barang`.`harga`) 
     AS `nm_brg`,`temp_pemesanan`.`qty_pesan` AS `qty_pesan`, `barang`.`harga`* 
     `temp_pemesanan`.`qty_pesan` AS `sub_total` FROM (`temp_pemesanan` join 
     `barang`) WHERE `temp_pemesanan`.`kd_brg` = `barang`.`kd_brg` ;
     ```
+
+-tampil_pemesanan
 
     ```
     CREATE VIEW `tampil_pemesanan` AS SELECT `detail_pesan`.`kd_brg` AS `kd_brg`, 
@@ -210,6 +248,8 @@ Gunakan perintah berikut untuk membuat model dan migrasi untuk setiap entitas:
     `barang`.`kd_brg` ;
     ```
 
+-tampil_pembelian
+
     ```
     CREATE VIEW `tampil_pembelian` AS (select `barang`.`kd_brg` AS 
     `kd_brg`,`detail_pembelian`.`no_beli` AS `no_beli`,`barang`.`nm_brg` AS 
@@ -218,12 +258,16 @@ Gunakan perintah berikut untuk membuat model dan migrasi untuk setiap entitas:
     `detail_pembelian`.`kd_brg`) ;
     ```
 
+-lap_jurnal
+
     ```
     CREATE VIEW `lap_jurnal` AS SELECT `akun`.`nm_akun` AS `nm_akun`, 
     `jurnal`.`tgl_jurnal` AS `tgl`, sum(`jurnal`.`debet`) AS `debet`, sum(`jurnal`.`kredit`) AS 
     `kredit` FROM (`akun` join `jurnal`) WHERE `akun`.`no_akun` = `jurnal`.`no_akun` 
     GROUP BY `jurnal`.`no_jurnal` ;
     ```
+
+-lap_stok
 
     ```
     CREATE VIEW `lap_stok` AS (select `barang`.`kd_brg` AS `kd_brg`,`barang`.`nm_brg` 
