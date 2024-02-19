@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('akuns', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+        Schema::create('akun', function (Blueprint $table) {
+            $table->string('no_akun',5)->primary();
+            $table->string('nm_akun',25);
         });
     }
 
@@ -22,6 +22,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('akuns');
+        Schema::dropIfExists('akun');
     }
 };

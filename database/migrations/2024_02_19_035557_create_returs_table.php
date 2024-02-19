@@ -11,9 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('returs', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+        Schema::create('retur', function (Blueprint $table) {
+            $table->string('no_retur',14)->primary();
+            $table->date('tgl_retur');
+            $table->integer('total_retur');
         });
     }
 
@@ -22,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('returs');
+        Schema::dropIfExists('retur');
     }
 };
