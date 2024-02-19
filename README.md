@@ -197,7 +197,7 @@ Setelah menjalankan perintah di atas, Anda dapat melakukan migrasi dengan perint
 
 ### Membuat view, jalankan query SQL berikut pada database Anda:
 
-temp_pemesanan
+1. temp_pemesanan
 
     CREATE VIEW `after` AS SELECT `temp_pemesanan`.`kd_brg` AS 
     `kd_brg`, concat(`barang`.`nm_brg`,`barang`.`harga`) 
@@ -205,7 +205,7 @@ temp_pemesanan
     `temp_pemesanan`.`qty_pesan` AS `sub_total` FROM (`temp_pemesanan` join 
     `barang`) WHERE `temp_pemesanan`.`kd_brg` = `barang`.`kd_brg` ;
 
-tampil_pemesanan
+2. tampil_pemesanan
 
     CREATE VIEW `tampil_pemesanan` AS SELECT `detail_pesan`.`kd_brg` AS `kd_brg`, 
     `detail_pesan`.`no_pesan` AS `no_pesan`, `barang`.`nm_brg` AS `nm_brg`, 
@@ -213,7 +213,7 @@ tampil_pemesanan
     FROM (`barang` join `detail_pesan`) WHERE `detail_pesan`.`kd_brg` = 
     `barang`.`kd_brg` ;
 
-tampil_pembelian
+3. tampil_pembelian
 
     CREATE VIEW `tampil_pembelian` AS (select `barang`.`kd_brg` AS 
     `kd_brg`,`detail_pembelian`.`no_beli` AS `no_beli`,`barang`.`nm_brg` AS 
@@ -221,14 +221,14 @@ tampil_pembelian
     (`barang` join `detail_pembelian`) where `barang`.`kd_brg` = 
     `detail_pembelian`.`kd_brg`) ;
 
-lap_jurnal
+4. lap_jurnal
 
     CREATE VIEW `lap_jurnal` AS SELECT `akun`.`nm_akun` AS `nm_akun`, 
     `jurnal`.`tgl_jurnal` AS `tgl`, sum(`jurnal`.`debet`) AS `debet`, sum(`jurnal`.`kredit`) AS 
     `kredit` FROM (`akun` join `jurnal`) WHERE `akun`.`no_akun` = `jurnal`.`no_akun` 
     GROUP BY `jurnal`.`no_jurnal` ;
 
-lap_stok
+5. lap_stok
 
     CREATE VIEW `lap_stok` AS (select `barang`.`kd_brg` AS `kd_brg`,`barang`.`nm_brg` 
     AS `nm_brg`,`barang`.`harga` AS `harga`,`barang`.`stok` AS 
@@ -238,6 +238,29 @@ lap_stok
     `detail_pembelian`.`kd_brg` group by `barang`.`kd_brg`) ;
 
 ## Pertemuan 3
+
+### Install Laravel UI
+
+    composer require laravel/ui
+
+    php artisan ui vue --auth
+    npm install
+    npm run dev
+    npm run build
+
+    php artisan serve
+
+    php artisan ui vue
+    npm install
+    npm run dev
+    npm run build
+    php artisan migrate
+
+    https://github.com/aleckrh/laravel-sb-admin-2
+
+    
+
+
 
 
 
