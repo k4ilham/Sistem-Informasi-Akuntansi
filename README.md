@@ -22,20 +22,21 @@
 Nama Database: `dbsia2`
 
 Ubah file `.env` dengan konfigurasi berikut:
-    ```
+
+    ```bash
     DB_CONNECTION=mysql
     DB_HOST=127.0.0.1
     DB_PORT=3306
     DB_DATABASE=dbsia2
     DB_USERNAME=root
     DB_PASSWORD=
-    ```
+
 
 ### Pembuatan Model dan Migrasi
 
 Gunakan perintah berikut untuk membuat model dan migrasi untuk setiap entitas:
 
-    ```
+    ```bash
     php artisan make:model Barang -m
     php artisan make:model Supplier -m
     php artisan make:model Akun -m
@@ -52,14 +53,14 @@ Gunakan perintah berikut untuk membuat model dan migrasi untuk setiap entitas:
     php artisan make:model Temp_pesan 
     php artisan make:model Beli
     php artisan make:model Laporan
-    ```
+
 
 Membuat trigger
 
-    ```
+    ```bash
     php artisan make:migration trigger_bersih_tempesan
     php artisan make:migration trigger_tambah
-    ```
+
 
 Membuat Migration
 
