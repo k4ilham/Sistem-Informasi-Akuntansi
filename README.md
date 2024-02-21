@@ -32,7 +32,7 @@ Ubah file `.env` dengan konfigurasi berikut:
 
 ### Pembuatan Model dan Migrasi
 
-Gunakan perintah berikut untuk membuat model dan migrasi untuk setiap entitas:
+1. Gunakan perintah berikut untuk membuat model dan migrasi untuk setiap entitas:
 
     php artisan make:model Barang -m
     php artisan make:model Supplier -m
@@ -51,15 +51,15 @@ Gunakan perintah berikut untuk membuat model dan migrasi untuk setiap entitas:
     php artisan make:model Beli
     php artisan make:model Laporan
 
-Membuat trigger
+2. Membuat trigger
 
     php artisan make:migration trigger_bersih_tempesan
     php artisan make:migration trigger_tambah
 
 
-Membuat Migration
+### Membuat Migration
 
-barang
+1. barang
 
         Schema::create('barang', function (Blueprint $table){
             $table->string('kd_brg',5)->primary();
@@ -68,14 +68,14 @@ barang
             $table->integer('stok');
         }); 
 
-akun
+2. akun
 
         Schema::create('akun', function (Blueprint $table) {
             $table->string('no_akun',5)->primary();
             $table->string('nm_akun',25);
         });
 
-supplier
+3. supplier
 
         Schema::create('supplier', function (Blueprint $table){
             $table->string('kd_supp',5)->primary();
@@ -84,7 +84,7 @@ supplier
             $table->string('telepon',13);
         });  
 
-pemesanan
+4. pemesanan
 
         Schema::create('pemesanan', function (Blueprint $table) {
             $table->string('no_pesan', 14)->primary();
@@ -93,7 +93,7 @@ pemesanan
             $table->string('kd_supp', 5);
         });    
 
-setting
+5. setting
 
         Schema::create('setting', function (Blueprint $table) {
             $table->string('id_setting',5)->primary();
@@ -101,7 +101,7 @@ setting
             $table->string('nama_transaksi',20);
         });    
 
-detail_pesan
+6. detail_pesan
 
         Schema::create('detail_pesan', function (Blueprint $table) {
             $table->string('no_pesan', 14);
@@ -110,14 +110,14 @@ detail_pesan
             $table->integer('subtotal');
         });    
 
-temp_pemesanan
+7. temp_pemesanan
 
          Schema::create('temp_pemesanan', function (Blueprint $table) {
             $table->string('kd_brg', 5);
             $table->integer('qty_pesan');
         });   
 
-pembelian
+8. pembelian
 
         Schema::create('pembelian', function (Blueprint $table) {
             $table->string('no_beli',14)->primary();
@@ -127,7 +127,7 @@ pembelian
             $table->string('no_pesan',14);
         });    
 
-detail_pembelian
+9. detail_pembelian
 
 
         Schema::create('detail_pembelian', function (Blueprint $table) {
@@ -138,7 +138,7 @@ detail_pembelian
         });   
 
 
-detail_retur
+10. detail_retur
 
          Schema::create('detail_retur', function (Blueprint $table) {
             $table->string('no_retur',14);
@@ -147,7 +147,7 @@ detail_retur
             $table->integer('sub_retur');
         });   
 
-retur
+11. retur
 
          Schema::create('retur', function (Blueprint $table) {
             $table->string('no_retur',14)->primary();
@@ -155,7 +155,7 @@ retur
             $table->integer('total_retur');
         });   
 
-jurnal
+12. jurnal
 
          Schema::create('jurnal', function (Blueprint $table) {
             $table->string('no_jurnal', 14)->primary();
@@ -166,9 +166,9 @@ jurnal
             $table->integer('kredit');
         });   
 
-membuat trigger
+### membuat trigger
 
-clear_tem_pesan
+1. clear_tem_pesan
 
          DB::unprepared('
         CREATE TRIGGER clear_tem_pesan AFTER INSERT ON detail_pesan
@@ -178,7 +178,7 @@ clear_tem_pesan
         END
         ');   
 
--detail_pembelian
+2. detail_pembelian
 
         DB::unprepared('
             CREATE TRIGGER after  INSERT ON detail_pembelian
@@ -195,9 +195,9 @@ Setelah menjalankan perintah di atas, Anda dapat melakukan migrasi dengan perint
 
     php artisan migrate:refresh --seed
 
-Untuk membuat view, jalankan query SQL berikut pada database Anda:
+### Membuat view, jalankan query SQL berikut pada database Anda:
 
-temp_pemesanan
+1. temp_pemesanan
 
     CREATE VIEW `after` AS SELECT `temp_pemesanan`.`kd_brg` AS 
     `kd_brg`, concat(`barang`.`nm_brg`,`barang`.`harga`) 
@@ -205,7 +205,7 @@ temp_pemesanan
     `temp_pemesanan`.`qty_pesan` AS `sub_total` FROM (`temp_pemesanan` join 
     `barang`) WHERE `temp_pemesanan`.`kd_brg` = `barang`.`kd_brg` ;
 
-tampil_pemesanan
+2. tampil_pemesanan
 
     CREATE VIEW `tampil_pemesanan` AS SELECT `detail_pesan`.`kd_brg` AS `kd_brg`, 
     `detail_pesan`.`no_pesan` AS `no_pesan`, `barang`.`nm_brg` AS `nm_brg`, 
@@ -213,7 +213,7 @@ tampil_pemesanan
     FROM (`barang` join `detail_pesan`) WHERE `detail_pesan`.`kd_brg` = 
     `barang`.`kd_brg` ;
 
-tampil_pembelian
+3. tampil_pembelian
 
     CREATE VIEW `tampil_pembelian` AS (select `barang`.`kd_brg` AS 
     `kd_brg`,`detail_pembelian`.`no_beli` AS `no_beli`,`barang`.`nm_brg` AS 
@@ -221,14 +221,14 @@ tampil_pembelian
     (`barang` join `detail_pembelian`) where `barang`.`kd_brg` = 
     `detail_pembelian`.`kd_brg`) ;
 
-lap_jurnal
+4. lap_jurnal
 
     CREATE VIEW `lap_jurnal` AS SELECT `akun`.`nm_akun` AS `nm_akun`, 
     `jurnal`.`tgl_jurnal` AS `tgl`, sum(`jurnal`.`debet`) AS `debet`, sum(`jurnal`.`kredit`) AS 
     `kredit` FROM (`akun` join `jurnal`) WHERE `akun`.`no_akun` = `jurnal`.`no_akun` 
     GROUP BY `jurnal`.`no_jurnal` ;
 
-lap_stok
+5. lap_stok
 
     CREATE VIEW `lap_stok` AS (select `barang`.`kd_brg` AS `kd_brg`,`barang`.`nm_brg` 
     AS `nm_brg`,`barang`.`harga` AS `harga`,`barang`.`stok` AS 
@@ -236,6 +236,35 @@ lap_stok
     `retur` from ((`barang` join `detail_retur`) join `detail_pembelian`) where 
     `barang`.`kd_brg` = `detail_retur`.`kd_brg` and `barang`.`kd_brg` = 
     `detail_pembelian`.`kd_brg` group by `barang`.`kd_brg`) ;
+
+## Pertemuan 3
+
+### Install Laravel UI
+
+    composer require laravel/ui
+
+    php artisan ui vue --auth
+    npm install
+    npm run dev
+    npm run build
+
+    php artisan serve
+
+    php artisan ui vue
+    npm install
+    npm run dev
+    npm run build
+    php artisan migrate
+
+    https://github.com/aleckrh/laravel-sb-admin-2
+
+## Pertemuan 4
+
+    
+
+
+
+
 
 
 
