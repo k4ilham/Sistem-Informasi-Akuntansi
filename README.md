@@ -324,6 +324,25 @@ Setelah menjalankan perintah di atas, Anda dapat melakukan migrasi dengan perint
 
     php artisan migrate:fresh --seed
 
+### Membuat Middleware
+
+    update file  app/Http/Kernel.php
+
+    protected $middlewareAliases = [
+        'role' => \Spatie\Permission\Middlewares\RoleMiddleware::class,
+        'permission' => \Spatie\Permission\Middlewares\PermissionMiddleware::class,
+        'role_or_permission' => \Spatie\Permission\Middlewares\RoleOrPermissionMiddleware::class,
+    ];
+
+    @role('admin')
+        //isi menu
+    @endrole
+
+
+
+
+
+
 
 
 

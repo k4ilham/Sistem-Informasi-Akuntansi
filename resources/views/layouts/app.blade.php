@@ -55,21 +55,15 @@
             {{ __('Settings') }}
         </div>
 
-        <!-- Nav Item - Profile -->
+        @role('admin')
         <li class="nav-item ">
             <a class="nav-link" href="">
                 <i class="fas fa-fw fa-user"></i>
-                <span>{{ __('Profile') }}</span>
+                <span>{{ __('Menu Akses Admin') }}</span>
             </a>
         </li>
+        @endrole
 
-        <!-- Nav Item - About -->
-        <li class="nav-item >
-            <a class="nav-link" href="">
-                <i class="fas fa-fw fa-hands-helping"></i>
-                <span>{{ __('About') }}</span>
-            </a>
-        </li>
 
         <!-- Divider -->
         <hr class="sidebar-divider d-none d-md-block">
