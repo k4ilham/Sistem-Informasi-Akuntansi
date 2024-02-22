@@ -45,7 +45,6 @@ Ubah file `.env` dengan konfigurasi berikut:
     php artisan make:model Retur -m
     php artisan make:model DetailRetur -m
     php artisan make:model Jurnal -m
-    
     php artisan make:model Pemesanan_tem 
     php artisan make:model Temp_pesan 
     php artisan make:model Beli
@@ -337,6 +336,10 @@ Setelah menjalankan perintah di atas, Anda dapat melakukan migrasi dengan perint
     @role('admin')
         //isi menu
     @endrole
+
+### Menambahkan role ke register
+
+    $user->assignRole('user');
 
 
 
