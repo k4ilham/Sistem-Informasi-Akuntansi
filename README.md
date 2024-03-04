@@ -328,9 +328,9 @@ Setelah menjalankan perintah di atas, Anda dapat melakukan migrasi dengan perint
     update file  app/Http/Kernel.php
 
     protected $middlewareAliases = [
-        'role' => \Spatie\Permission\Middlewares\RoleMiddleware::class,
-        'permission' => \Spatie\Permission\Middlewares\PermissionMiddleware::class,
-        'role_or_permission' => \Spatie\Permission\Middlewares\RoleOrPermissionMiddleware::class,
+        'role' => \Spatie\Permission\Middleware\RoleMiddleware::class,
+        'permission' => \Spatie\Permission\Middleware\PermissionMiddleware::class,
+        'role_or_permission' => \Spatie\Permission\Middleware\RoleOrPermissionMiddleware::class,
     ];
 
     @role('admin')
@@ -464,6 +464,35 @@ Setelah menjalankan perintah di atas, Anda dapat melakukan migrasi dengan perint
 
 
 ### Form Master Setting Akun
+
+    //model Setting
+
+    class Setting extends Model
+    {
+        use HasFactory;
+
+        protected $primaryKey = 'id_setting';
+        public $incrementing = false;
+        protected $keyType = 'string';
+        public $timestamps = false;
+        protected $table = "setting";
+        protected $fillable=['id_setting','no_akun','nama_transaksi'];
+    }
+
+    //controller
+    php artisan make:controller SettingController --resource
+
+    //routes
+    Route::get('/setting', [SettingController::class, 'index'])->name('setting.transaksi');
+    Route::post('/setting/simpan','SettingController@simpan');
+
+    //view
+    resources/views/admin/setting/index.blade.php
+
+### Seed Setting Akun
+
+    php artisan make:seeder SettingSeeder
+    php artisan db:seed
 
 ## Pertemuan 8
 
