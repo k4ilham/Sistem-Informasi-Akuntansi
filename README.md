@@ -45,7 +45,6 @@ Ubah file `.env` dengan konfigurasi berikut:
     php artisan make:model Retur -m
     php artisan make:model DetailRetur -m
     php artisan make:model Jurnal -m
-    
     php artisan make:model Pemesanan_tem 
     php artisan make:model Temp_pesan 
     php artisan make:model Beli
@@ -260,7 +259,121 @@ Setelah menjalankan perintah di atas, Anda dapat melakukan migrasi dengan perint
 
 ## Pertemuan 4
 
-    
+### Menambahkan role permission
+
+    composer require spatie/laravel-permission
+    php artisan vendor:publish --provider="Spatie\Permission\PermissionServiceProvider"
+
+### Menambahkan spatie ke model User
+
+    use Spatie\Permission\Traits\HasRoles;
+    use HasApiTokens, HasFactory, Notifiable, HasRoles;
+
+### Membuat Role Seeder
+
+    php artisan make:seeder RoleSeeder
+
+    // Update File database/seeder/RoleSeeder.php
+
+    use Spatie\Permission\Models\Role;
+
+    Role::create([
+        'name' => 'admin',
+        'guard_name' => 'web'
+    ]);
+
+    Role::create([
+        'name' => 'user',
+        'guard_name' => 'web'
+    ]);
+
+### Membuat User Seeder
+
+    php artisan make:seeder UserSeeder
+
+    // Update File database/seeder/UserSeeder.php
+
+    use App\Models\User;
+
+    $admin = User::create([
+        'name' => 'admin',
+        'email' => 'admin@test.com',
+        'password' => bcrypt('password'),
+    ]);
+    $admin->assignRole('admin');
+
+    $user = User::create([
+        'name' => 'user',
+        'email' => 'user@test.com',
+        'password' => bcrypt('password'),
+    ]);
+    $user->assignRole('user');
+
+### Membuat Database Seeder
+
+    // Update File database/seeder/databaseSeeder.php
+
+    use Database\Seeders\RoleSeeder;
+    use Database\Seeders\UserSeeder;
+
+    $this->call(RoleSeeder::class);
+    $this->call(UserSeeder::class);
+
+### jalankan perintah migration dan seeder
+
+    php artisan migrate:fresh --seed
+
+### Membuat Middleware
+
+    update file  app/Http/Kernel.php
+
+    protected $middlewareAliases = [
+        'role' => \Spatie\Permission\Middlewares\RoleMiddleware::class,
+        'permission' => \Spatie\Permission\Middlewares\PermissionMiddleware::class,
+        'role_or_permission' => \Spatie\Permission\Middlewares\RoleOrPermissionMiddleware::class,
+    ];
+
+    @role('admin')
+        //isi menu
+    @endrole
+
+### Menambahkan role ke register
+
+    $user->assignRole('user');
+
+## Pertemuan 5
+
+### Memecah Layout
+
+    // tambahkan view di
+    resources/views/layouts/partials/footer.blade.php
+    resources/views/layouts/partials/navbar.blade.php
+    resources/views/layouts/partials/sidebar.blade.php
+
+### Form Master User 
+
+    // tambahkan view di
+    resources/views/admin/user/user.blade.php
+
+    // tambahkan route di routes/web.php
+    use app\Http\Controllers\userController;
+    Route:: resource('/user','userController' );
+    Route:: get('/user/hapus/{id}' , 'userController@destroy' );
+
+    //buat controller
+    php artisan make:controller UserController --resource
+
+    // tambahkan view di
+    resources/views/admin/user/editUser.blade.php
+
+### Menambahkan DataTable
+
+
+
+
+
+
+
 
 
 
