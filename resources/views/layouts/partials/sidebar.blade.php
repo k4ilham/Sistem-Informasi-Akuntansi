@@ -29,20 +29,28 @@
 </div>
 
 @role('admin')
-    <li class="nav-item ">
+    <li class="nav-item">
         <a class="nav-link" href="{{ route('user.index') }}">
-            <i class="fas fa-fw fa-user"></i>
+            <i class="fas fa-fw fa-users"></i> <!-- Ganti ikon dengan ikon pengguna -->
             <span>{{ __('Master User') }}</span>
         </a>
     </li>
 
-    <li class="nav-item ">
+    <li class="nav-item">
         <a class="nav-link" href="{{ route('barang.index') }}">
-            <i class="fas fa-fw fa-user"></i>
+            <i class="fas fa-fw fa-cubes"></i> <!-- Ganti ikon dengan ikon barang -->
             <span>{{ __('Master Barang') }}</span>
         </a>
     </li>
+
+    <li class="nav-item">
+        <a class="nav-link" href="{{ route('supplier.index') }}">
+            <i class="fas fa-fw fa-truck"></i> <!-- Ganti ikon dengan ikon supplier -->
+            <span>{{ __('Master Supplier') }}</span>
+        </a>
+    </li>
 @endrole
+
 
 
 <!-- Divider -->
