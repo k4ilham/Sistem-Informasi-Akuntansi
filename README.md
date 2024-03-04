@@ -341,6 +341,33 @@ Setelah menjalankan perintah di atas, Anda dapat melakukan migrasi dengan perint
 
     $user->assignRole('user');
 
+## Pertemuan 5
+
+### Memecah Layout
+
+    // tambahkan view di
+    resources/views/layouts/partials/footer.blade.php
+    resources/views/layouts/partials/navbar.blade.php
+    resources/views/layouts/partials/sidebar.blade.php
+
+### Form Master User 
+
+    // tambahkan view di
+    resources/views/admin/user/user.blade.php
+
+    // tambahkan route di routes/web.php
+    use app\Http\Controllers\userController;
+    Route:: resource('/user','userController' );
+    Route:: get('/user/hapus/{id}' , 'userController@destroy' );
+
+    //buat controller
+    php artisan make:controller UserController --resource
+
+    // tambahkan view di
+    resources/views/admin/user/editUser.blade.php
+
+### Menambahkan DataTable
+
 
 
 
