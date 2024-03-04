@@ -14,7 +14,10 @@ class UserController extends Controller
     public function index()
     {
         $user = User::all();
-        return view('admin.user.user',['user'=>$user]);
+
+        return view('admin.user.index',[
+            'user'=>$user
+        ]);
     }
 
 
@@ -29,13 +32,7 @@ class UserController extends Controller
         $save_user->name=$request->get('username');
         $save_user->email=$request->get('email');
         $save_user->password=bcrypt('password');
-
-        if ($request->get('roles')=='ADMIN') {
-            $save_user->assignRole('admin');
-        } else {
-            $save_user->assignRole('user');
-        }
-
+        $save_user->assignRole($request->get('roles') == 'ADMIN' ? 'admin' : 'user');
         $save_user->save();
 
         return redirect()->route('user.index');
@@ -44,7 +41,7 @@ class UserController extends Controller
     public function show($id)
     {
         $user = User::find($id);
-        return view('admin.user.user',compact('user'));
+        return view('admin.user.index',compact('user'));
     }
 
     public function edit($id)
@@ -53,7 +50,7 @@ class UserController extends Controller
         $roles = Role::pluck('name')->all();
         $userRole = $user->roles->pluck('name')->all();
 
-        return view('admin.user.editUser',compact('user','roles','userRole'));
+        return view('admin.user.edit',compact('user','roles','userRole'));
     }
 
     public function update(Request $request, $id)
