@@ -368,6 +368,14 @@ Setelah menjalankan perintah di atas, Anda dapat melakukan migrasi dengan perint
 
 ### Menambahkan DataTable
 
+    <script src="{{ asset('asset/js/datatables/datatables.min.js') }}"></script>
+    <script src="{{ asset('asset/js/datatables/modules-datatables.js') }}"></script>
+    <script src="{{ asset('asset/js/datatables/dataTables.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('asset/js/datatables/dataTables.select.min.js') }}"></script>
+    <link rel="stylesheet" href="{{ asset('asset/css/datatables/dataTables.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('asset/css/datatables/select.bootstrap4.min.css') }}">
+
+
 
 
 
