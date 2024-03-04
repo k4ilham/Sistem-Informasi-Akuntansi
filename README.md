@@ -352,19 +352,17 @@ Setelah menjalankan perintah di atas, Anda dapat melakukan migrasi dengan perint
 
 ### Form Master User 
 
-    // tambahkan view di
-    resources/views/admin/user/user.blade.php
-
-    // tambahkan route di routes/web.php
-    use app\Http\Controllers\userController;
-    Route:: resource('/user','userController' );
-    Route:: get('/user/hapus/{id}' , 'userController@destroy' );
-
-    //buat controller
+    //controller
     php artisan make:controller UserController --resource
 
-    // tambahkan view di
-    resources/views/admin/user/editUser.blade.php
+    //routes
+    use App\Http\Controllers\UserController;
+    Route::get('/user/hapus/{id}', [UserController::class, 'destroy']);
+    Route::resource('/user', UserController::class);
+
+    //view
+    resources/views/admin/user/index.blade.php
+    resources/views/admin/user/edit.blade.php
 
 ### Menambahkan DataTable
 
@@ -374,6 +372,111 @@ Setelah menjalankan perintah di atas, Anda dapat melakukan migrasi dengan perint
     <script src="{{ asset('asset/js/datatables/dataTables.select.min.js') }}"></script>
     <link rel="stylesheet" href="{{ asset('asset/css/datatables/dataTables.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('asset/css/datatables/select.bootstrap4.min.css') }}">
+
+## Pertemuan 6
+
+### Form Master Barang 
+
+    //model Barang
+
+    class Barang extends Model
+    {
+        use HasFactory;
+
+        protected $primaryKey = 'kd_brg';
+        public $incrementing = false;
+        protected $keyType = 'string';
+        public $timestamps = false;
+        protected $table = "barang";
+        protected $fillable=['kd_brg','nm_brg','harga','stok'];
+    }
+
+    //controller
+    php artisan make:controller BarangController --resource
+
+    //routes
+    use App\Http\Controllers\BarangController;
+    Route::get('/user/hapus/{id}', [BarangController::class, 'destroy']);
+    Route::resource('/user', BarangController::class);
+
+    //view
+    resources/views/admin/barang/index.blade.php
+    resources/views/admin/barang/edit.blade.php
+
+### Form Master Supplier
+
+    //model Supplier
+
+    class Supplier extends Model
+    {
+        use HasFactory;
+
+        protected $primaryKey = 'kd_supp';
+        public $incrementing = false;
+        protected $keyType = 'string';
+        public $timestamps = false;
+        protected $table = "supplier";
+        protected $fillable=['kd_supp','nm_supp','alamat','telepon'];
+    }
+
+    //controller
+    php artisan make:controller SupplierController --resource
+
+    //routes
+    use App\Http\Controllers\SupplierController;
+    Route::get('/user/hapus/{id}', [SupplierController::class, 'destroy']);
+    Route::resource('/user', SupplierController::class);
+
+    //view
+    resources/views/admin/supplier/index.blade.php
+    resources/views/admin/supplier/edit.blade.php
+
+## Pertemuan 7
+
+### Form Master Akun
+
+### Form Master Setting Akun
+
+## Pertemuan 8
+
+    Libur UTS
+
+## Pertemuan 9
+
+### Form Transaksi Pemesanan
+
+## Pertemuan 10 & 11
+
+### Form Transaksi Pembelian
+
+### Faktur Invoice
+
+## Pertemuan 12
+
+### Trigger Pengurang Stok
+
+### Form Retur
+
+### Laporan Jurnal Umum
+
+### Laporan Stok Barang
+
+## Pertemuan 13
+
+    Review
+
+## Pertemuan 14 & 15
+
+    Presentasi Project
+
+## Pertemuan 16
+
+    Libur UAS
+
+
+
+
+
 
 
 
