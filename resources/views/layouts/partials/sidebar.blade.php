@@ -49,6 +49,13 @@
             <span>{{ __('Master Supplier') }}</span>
         </a>
     </li>
+
+    <li class="nav-item">
+        <a class="nav-link" href="{{ route('akun.index') }}">
+            <i class="fas fa-fw fa-truck"></i> <!-- Ganti ikon dengan ikon supplier -->
+            <span>{{ __('Master Akun') }}</span>
+        </a>
+    </li>
 @endrole
 
 

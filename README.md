@@ -433,7 +433,35 @@ Setelah menjalankan perintah di atas, Anda dapat melakukan migrasi dengan perint
 
 ## Pertemuan 7
 
+
 ### Form Master Akun
+
+    //model Akun
+
+    class Akun extends Model
+    {
+        use HasFactory;
+
+        protected $primaryKey = 'no_akun';
+        public $incrementing = false;
+        protected $keyType = 'string';
+        public $timestamps = false;
+        protected $table = "akun";
+        protected $fillable=['no_akun','nama_akun'];
+    }
+
+    //controller
+    php artisan make:controller AkunController --resource
+
+    //routes
+    use App\Http\Controllers\AkunController;
+    Route::get('/akun/hapus/{id}', [AkunController::class, 'destroy']);
+    Route::resource('/akun', AkunController::class);
+
+    //view
+    resources/views/admin/akun/index.blade.php
+    resources/views/admin/akun/edit.blade.php
+
 
 ### Form Master Setting Akun
 

@@ -5,6 +5,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\BarangController;
 use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\AkunController;
 
 
 Auth::routes(); 
@@ -22,6 +23,10 @@ Route::resource('/barang', BarangController::class);
 //Supplier
 Route::get('/supplier/hapus/{id}', [SupplierController::class, 'destroy']);
 Route::resource('/supplier', SupplierController::class);
+
+//Akun
+Route::get('/akun/hapus/{id}', [AkunController::class, 'destroy']);
+Route::resource('/akun', AkunController::class);
 
 
 
