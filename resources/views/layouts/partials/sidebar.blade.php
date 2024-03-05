@@ -98,6 +98,30 @@
     </li>
 @endrole
 
+<!-- Divider -->
+<hr class="sidebar-divider">
+
+<!-- Heading -->
+<div class="sidebar-heading">
+    {{ __('Laporan') }}
+</div>
+
+@role('admin')
+    <li class="nav-item">
+        <a class="nav-link" href="{{ route('laporan.index') }}">
+            <i class="fas fa-fw fa-shopping-cart"></i> 
+            <span>{{ __('Jurnal Umum') }}</span>
+        </a>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link" href="{{ route('stok.index') }}">
+            <i class="fas fa-fw fa-truck-loading"></i>
+            <span>{{ __('Stok Barang') }}</span>
+        </a>
+    </li>
+@endrole
+
 
 
 
