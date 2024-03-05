@@ -20,9 +20,13 @@
         </div>
         <div class="col-sm">
             <select name="akun[]" id="supp select2" class="form-control" required width="100%">
-            <option value="">Pilih Akun</option>
+                <option value="">Pilih Akun</option>
                 @foreach ($akun as $akn)
-                    <option value="{{ $akn->no_akun }}">{{ $akn->no_akun }} - {{ $akn->nm_akun }} </option>
+                    @if ($stg->no_akun == $akn->no_akun)
+                        <option value="{{ $akn->no_akun }}" selected>{{ $akn->no_akun }} - {{ $akn->nm_akun }}</option>
+                    @else
+                        <option value="{{ $akn->no_akun }}">{{ $akn->no_akun }} - {{ $akn->nm_akun }}</option>
+                    @endif
                 @endforeach
             </select>
 
