@@ -77,7 +77,7 @@
 
 @role('admin')
     <li class="nav-item">
-        <a class="nav-link" href="{{ route('user.index') }}">
+        <a class="nav-link" href="{{ route('pemesanan.index') }}">
             <i class="fas fa-fw fa-shopping-cart"></i> 
             <span>{{ __('Pemesanan') }}</span>
         </a>

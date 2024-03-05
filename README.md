@@ -535,6 +535,13 @@ Setelah menjalankan perintah di atas, Anda dapat melakukan migrasi dengan perint
         protected $table = "detail_pesan";
         protected $fillable=['no_pesan','kd_brg','qty_pesan','subtotal'];
 
+    //controller
+    php artisan make:controller PemesananController 
+    php artisan make:controller DetailPesanController 
+
+    //view
+    resources/views/admin/pemesanan/index.blade.php
+
 ## Pertemuan 10 & 11
 
 ### Form Transaksi Pembelian
