@@ -10,6 +10,7 @@ use App\Http\Controllers\AkunController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\PemesananController;
 use App\Http\Controllers\DetailPesanController;
+use App\Http\Controllers\PembelianController;
 
 Auth::routes(); 
 
@@ -41,7 +42,6 @@ Route::group(['middleware' => ['role:admin']], function () {
 
 });
 
-
 //Role User & Admin
 
 //Pemesanan
@@ -52,6 +52,14 @@ Route::get('/transaksi/hapus/{kd_brg}',[PemesananController::class, 'destroy']);
 //Detail Pesan
 Route::post('/detail/store', [DetailPesanController::class, 'store']);
 Route::post('/detail/simpan', [DetailPesanController::class, 'simpan']);
+
+//Pembelian
+Route::get('/pembelian', [PembelianController::class, 'index'])->name('pembelian.index');
+Route::get('/pembelian-beli/{id}', [PembelianController::class, 'edit']);
+Route::post('/pembelian/simpan', [PembelianController::class, 'simpan']);
+
+//Cetak Invoice
+Route::get('/laporan/faktur/{invoice}', [PembelianController::class, 'pdf'])->name('cetak.order_pdf');
 
 
 

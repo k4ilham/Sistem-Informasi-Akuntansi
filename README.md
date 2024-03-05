@@ -536,11 +536,20 @@ Setelah menjalankan perintah di atas, Anda dapat melakukan migrasi dengan perint
         protected $fillable=['no_pesan','kd_brg','qty_pesan','subtotal'];
 
     //controller
-    php artisan make:controller PemesananController 
-    php artisan make:controller DetailPesanController 
+        php artisan make:controller PemesananController 
+        php artisan make:controller DetailPesanController 
 
     //view
-    resources/views/admin/pemesanan/index.blade.php
+        resources/views/pemesanan/index.blade.php
+
+    //Route Pemesanan
+        Route::get('/transaksi', [PemesananController::class, 'index'])->name('pemesanan.index');
+        Route::post('/sem/store', [PemesananController::class, 'store']);
+        Route::get('/transaksi/hapus/{kd_brg}',[PemesananController::class, 'destroy']); 
+
+    //Route Detail Pesan
+        Route::post('/detail/store', [DetailPesanController::class, 'store']);
+        Route::post('/detail/simpan', [DetailPesanController::class, 'simpan']);
 
 ## Pertemuan 10 & 11
 
@@ -570,10 +579,33 @@ Setelah menjalankan perintah di atas, Anda dapat melakukan migrasi dengan perint
         protected $table = "tampil_pemesanan";
         protected $fillable=['kd_brg','no_pesan','nm_brg','qty_pesan','sub_total'];
 
+    //Model Jurnal
+        protected $primaryKey = 'no_jurnal';
+        public $incrementing = false;
+        protected $keyType = 'string';
+        public $timestamps = false;
+        protected $table = "jurnal";
+        protected $fillable=['no_jurnal','tgl_jurnal','keterangan','no_akun','debet','kredit'];
+
     //controller
         php artisan make:controller PembelianController --resource
 
+    //view
+        resources/views/pembelian/index.blade.php
+        resources/views/pembelian/beli.blade.php
+
+    //Route Pembelian
+        Route::get('/pembelian', [PembelianController::class, 'index'])->name('pembelian.index');
+        Route::get('/pembelian-beli/{id}', [PembelianController::class, 'edit']);
+        Route::post('/pembelian/simpan', [PembelianController::class, 'simpan']);
+
 ### Faktur Invoice
+
+    //Route Cetak Invoice
+        Route::get('/laporan/faktur/{invoice}', [PembelianController::class, 'pdf'])->name('cetak.order_pdf');
+
+    //view
+        resources/views/laporan/faktur.blade.php
 
 ## Pertemuan 12
 

@@ -84,7 +84,7 @@
     </li>
 
     <li class="nav-item">
-        <a class="nav-link" href="{{ route('barang.index') }}">
+        <a class="nav-link" href="{{ route('pembelian.index') }}">
             <i class="fas fa-fw fa-truck-loading"></i>
             <span>{{ __('Pembelian') }}</span>
         </a>
