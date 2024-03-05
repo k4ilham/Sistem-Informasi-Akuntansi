@@ -328,9 +328,9 @@ Setelah menjalankan perintah di atas, Anda dapat melakukan migrasi dengan perint
     update file  app/Http/Kernel.php
 
     protected $middlewareAliases = [
-        'role' => \Spatie\Permission\Middlewares\RoleMiddleware::class,
-        'permission' => \Spatie\Permission\Middlewares\PermissionMiddleware::class,
-        'role_or_permission' => \Spatie\Permission\Middlewares\RoleOrPermissionMiddleware::class,
+        'role' => \Spatie\Permission\Middleware\RoleMiddleware::class,
+        'permission' => \Spatie\Permission\Middleware\PermissionMiddleware::class,
+        'role_or_permission' => \Spatie\Permission\Middleware\RoleOrPermissionMiddleware::class,
     ];
 
     @role('admin')
@@ -433,9 +433,66 @@ Setelah menjalankan perintah di atas, Anda dapat melakukan migrasi dengan perint
 
 ## Pertemuan 7
 
+
 ### Form Master Akun
 
+    //model Akun
+
+    class Akun extends Model
+    {
+        use HasFactory;
+
+        protected $primaryKey = 'no_akun';
+        public $incrementing = false;
+        protected $keyType = 'string';
+        public $timestamps = false;
+        protected $table = "akun";
+        protected $fillable=['no_akun','nama_akun'];
+    }
+
+    //controller
+    php artisan make:controller AkunController --resource
+
+    //routes
+    use App\Http\Controllers\AkunController;
+    Route::get('/akun/hapus/{id}', [AkunController::class, 'destroy']);
+    Route::resource('/akun', AkunController::class);
+
+    //view
+    resources/views/admin/akun/index.blade.php
+    resources/views/admin/akun/edit.blade.php
+
+
 ### Form Master Setting Akun
+
+    //model Setting
+
+    class Setting extends Model
+    {
+        use HasFactory;
+
+        protected $primaryKey = 'id_setting';
+        public $incrementing = false;
+        protected $keyType = 'string';
+        public $timestamps = false;
+        protected $table = "setting";
+        protected $fillable=['id_setting','no_akun','nama_transaksi'];
+    }
+
+    //controller
+    php artisan make:controller SettingController --resource
+
+    //routes
+    Route::get('/setting', [SettingController::class, 'index'])->name('setting.transaksi');
+    Route::post('/setting/simpan','SettingController@simpan');
+
+    //view
+    resources/views/admin/setting/index.blade.php
+
+### Seed Setting Akun
+
+    php artisan make:seeder SettingSeeder
+    php artisan db:seed
 
 ## Pertemuan 8
 
@@ -444,6 +501,46 @@ Setelah menjalankan perintah di atas, Anda dapat melakukan migrasi dengan perint
 ## Pertemuan 9
 
 ### Form Transaksi Pemesanan
+
+    //Model Pemesanan
+        protected $primaryKey = 'no_pesan';
+        public $incrementing = false;
+        protected $keyType = 'string';
+        public $timestamps = false;
+        protected $table = "pemesanan";
+        protected $fillable=['no_pesan','tgl_pesan','total','kd_supp'];
+
+
+    //Model Pemesanan_tem 
+        protected $primaryKey = 'kd_brg';
+        public $incrementing = false;
+        protected $keyType = 'string';
+        public $timestamps = false;
+        protected $table = "temp_pemesanan";
+        protected $fillable=['kd_brg','qty_pesan'];
+
+    //Model Temp_pesan
+        protected $primaryKey = 'kd_brg';
+        public $incrementing = false;
+        protected $keyType = 'string';
+        public $timestamps = false;
+        protected $table = "view_temp_pesan";
+        protected $fillable=['kd_brg','nm_brg','harga','stok'];
+    
+    //Model Detail_pesan
+        protected $primaryKey = 'no_pesan';
+        public $incrementing = false;
+        protected $keyType = 'string';
+        public $timestamps = false;
+        protected $table = "detail_pesan";
+        protected $fillable=['no_pesan','kd_brg','qty_pesan','subtotal'];
+
+    //controller
+    php artisan make:controller PemesananController 
+    php artisan make:controller DetailPesanController 
+
+    //view
+    resources/views/admin/pemesanan/index.blade.php
 
 ## Pertemuan 10 & 11
 
