@@ -35,7 +35,9 @@ Ubah file `.env` dengan konfigurasi berikut:
 1. Gunakan perintah berikut untuk membuat model dan migrasi untuk setiap entitas:
 
         php artisan make:model Barang -m
+
         php artisan make:model Supplier -m
+
         php artisan make:model Akun -m
         php artisan make:model Setting -m
         php artisan make:model Pemesanan -m
@@ -53,6 +55,7 @@ Ubah file `.env` dengan konfigurasi berikut:
 2. Membuat trigger
 
         php artisan make:migration trigger_bersih_tempesan
+        
         php artisan make:migration trigger_tambah
 
 
