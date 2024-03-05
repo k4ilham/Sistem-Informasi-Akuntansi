@@ -11,6 +11,7 @@ use App\Http\Controllers\SettingController;
 use App\Http\Controllers\PemesananController;
 use App\Http\Controllers\DetailPesanController;
 use App\Http\Controllers\PembelianController;
+use App\Http\Controllers\ReturController;
 
 Auth::routes(); 
 
@@ -61,5 +62,9 @@ Route::post('/pembelian/simpan', [PembelianController::class, 'simpan']);
 //Cetak Invoice
 Route::get('/laporan/faktur/{invoice}', [PembelianController::class, 'pdf'])->name('cetak.order_pdf');
 
+//Retur 
+Route::get('/retur',[ReturController::class, 'index'])->name('retur.index');
+Route::get('/retur-beli/{id}', [ReturController::class, 'edit']);
+Route::post('/retur/simpan', [ReturController::class, 'simpan']);
 
 

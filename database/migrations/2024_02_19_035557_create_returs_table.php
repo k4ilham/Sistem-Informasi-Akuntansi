@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('retur', function (Blueprint $table) {
-            $table->string('no_retur',14)->primary();
+            $table->string('no_retur',20)->primary();
             $table->date('tgl_retur');
             $table->integer('total_retur');
         });

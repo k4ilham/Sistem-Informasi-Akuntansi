@@ -611,7 +611,51 @@ Setelah menjalankan perintah di atas, Anda dapat melakukan migrasi dengan perint
 
 ### Trigger Pengurang Stok
 
+    php artisan make:migration trigger_kurang
+
+    DB::unprepared('
+        CREATE TRIGGER update_stok_retur after INSERT ON detail_retur
+        FOR EACH ROW BEGIN
+        UPDATE barang
+        SET stok = stok - NEW.qty_retur
+        WHERE
+        kd_brg = NEW.kd_brg;
+        END 
+    ');
+
+    DB::unprepared('DROP TRIGGER update_stok_retur');
+
+    php artisan migrate.
+
 ### Form Retur
+
+    //Model Retur
+        protected $primaryKey = 'no_retur';
+        public $incrementing = false;
+        protected $keyType = 'string';
+        public $timestamps = false;
+        protected $table = "retur_beli";
+        protected $fillable=['no_retur','tgl_retur','total_retur'];
+
+    //Model DetailRetur
+        protected $primaryKey = 'no_retur';
+        public $incrementing = false;
+        protected $keyType = 'string';
+        public $timestamps = false;
+        protected $table = "detail_retur";
+        protected $fillable=['no_retur','kd_brg','qty_retur','sub_retur'];
+
+    //controller
+        php artisan make:controller ReturController --resource
+
+    //view
+        resources/views/retut/index.blade.php
+        resources/views/retut/beli.blade.php
+
+    //Route Retur 
+        Route::get('/retur',[ReturController::class, 'index'])->name('retur.index');
+        Route::get('/retur-beli/{id}', [ReturController::class, 'edit']);
+        Route::post('/retur/simpan', [ReturController::class, 'simpan']);
 
 ### Laporan Jurnal Umum
 
