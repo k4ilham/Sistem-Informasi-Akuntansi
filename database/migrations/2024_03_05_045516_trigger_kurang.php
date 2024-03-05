@@ -11,12 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('detail_retur', function (Blueprint $table) {
-            $table->string('no_retur',20);
-            $table->string('kd_brg',5);
-            $table->integer('qty_retur');
-            $table->integer('sub_retur');
-        });
+        DB::unprepared('
+            CREATE TRIGGER update_stok_retur after INSERT ON detail_retur
+            FOR EACH ROW BEGIN
+            UPDATE barang
+            SET stok = stok - NEW.qty_retur
+            WHERE
+            kd_brg = NEW.kd_brg;
+            END
+        ');
     }
 
     /**
@@ -24,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('detail_retur');
+        DB::unprepared('DROP TRIGGER update_stok_retur');
     }
 };

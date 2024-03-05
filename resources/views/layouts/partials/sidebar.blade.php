@@ -91,7 +91,7 @@
     </li>
 
     <li class="nav-item">
-        <a class="nav-link" href="{{ route('supplier.index') }}">
+        <a class="nav-link" href="{{ route('retur.index') }}">
             <i class="fas fa-fw fa-undo"></i> 
             <span>{{ __('Retur') }}</span>
         </a>
