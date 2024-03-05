@@ -5,14 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Temp_pesan extends Model
+class DetailPesan extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'kd_brg';
+    protected $primaryKey = 'no_pesan';
     public $incrementing = false;
     protected $keyType = 'string';
     public $timestamps = false;
-    protected $table = "view_temp_pesan";
-    protected $fillable=['kd_brg','nm_brg','harga','stok'];
+    protected $table = "detail_pesan";
+    protected $fillable=['no_pesan','kd_brg','qty_pesan','subtotal'];
 }

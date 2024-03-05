@@ -502,6 +502,39 @@ Setelah menjalankan perintah di atas, Anda dapat melakukan migrasi dengan perint
 
 ### Form Transaksi Pemesanan
 
+    //Model Pemesanan
+        protected $primaryKey = 'no_pesan';
+        public $incrementing = false;
+        protected $keyType = 'string';
+        public $timestamps = false;
+        protected $table = "pemesanan";
+        protected $fillable=['no_pesan','tgl_pesan','total','kd_supp'];
+
+
+    //Model Pemesanan_tem 
+        protected $primaryKey = 'kd_brg';
+        public $incrementing = false;
+        protected $keyType = 'string';
+        public $timestamps = false;
+        protected $table = "temp_pemesanan";
+        protected $fillable=['kd_brg','qty_pesan'];
+
+    //Model Temp_pesan
+        protected $primaryKey = 'kd_brg';
+        public $incrementing = false;
+        protected $keyType = 'string';
+        public $timestamps = false;
+        protected $table = "view_temp_pesan";
+        protected $fillable=['kd_brg','nm_brg','harga','stok'];
+    
+    //Model Detail_pesan
+        protected $primaryKey = 'no_pesan';
+        public $incrementing = false;
+        protected $keyType = 'string';
+        public $timestamps = false;
+        protected $table = "detail_pesan";
+        protected $fillable=['no_pesan','kd_brg','qty_pesan','subtotal'];
+
 ## Pertemuan 10 & 11
 
 ### Form Transaksi Pembelian
