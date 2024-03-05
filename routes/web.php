@@ -12,6 +12,8 @@ use App\Http\Controllers\PemesananController;
 use App\Http\Controllers\DetailPesanController;
 use App\Http\Controllers\PembelianController;
 use App\Http\Controllers\ReturController;
+use App\Http\Controllers\LaporanController;
+use App\Http\Controllers\LapStokController;
 
 Auth::routes(); 
 
@@ -66,5 +68,10 @@ Route::get('/laporan/faktur/{invoice}', [PembelianController::class, 'pdf'])->na
 Route::get('/retur',[ReturController::class, 'index'])->name('retur.index');
 Route::get('/retur-beli/{id}', [ReturController::class, 'edit']);
 Route::post('/retur/simpan', [ReturController::class, 'simpan']);
+
+//Laporan
+Route::resource( '/laporan' , LaporanController::class);
+Route::get('/laporancetak/cetak_pdf', [LaporanController::class, 'cetak_pdf']);
+Route::resource( '/stok' , LapStokController::class);
 
 

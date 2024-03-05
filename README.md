@@ -649,8 +649,8 @@ Setelah menjalankan perintah di atas, Anda dapat melakukan migrasi dengan perint
         php artisan make:controller ReturController --resource
 
     //view
-        resources/views/retut/index.blade.php
-        resources/views/retut/beli.blade.php
+        resources/views/retur/index.blade.php
+        resources/views/retur/beli.blade.php
 
     //Route Retur 
         Route::get('/retur',[ReturController::class, 'index'])->name('retur.index');
@@ -659,7 +659,38 @@ Setelah menjalankan perintah di atas, Anda dapat melakukan migrasi dengan perint
 
 ### Laporan Jurnal Umum
 
+    //Model Laporan
+        protected $table = "jurnal";
+        protected $fillable=['no_jurnal','tgl_jurnal','keterangan','no_akun','debet','kredit'];
+
+    //controller
+        php artisan make:controller LaporanController --resource
+
+    //view
+        resources/views/laporan/index.blade.php
+        resources/views/laporan/cetak.blade.php
+
+    //Route Laporan
+        Route::resource( '/laporan' , LaporanController::class);
+        Route::get('/laporancetak/cetak_pdf', [LaporanController::class, 'cetak_pdf']);
+
 ### Laporan Stok Barang
+
+    //Model Laporan Stok
+        php artisan make:model Laporanstok
+
+        protected $table = "lap_stok";
+        protected $fillable = ['kd_brg','nm_brg','harga','stok','beli','retur'];
+
+    //controller
+        php artisan make:controller LapstokController --resource
+
+    //view
+        resources/views/laporan/stok.blade.php
+
+    //Route Laporan
+        Route::resource( '/stok' , LapStokController::class);
+
 
 ## Pertemuan 13
 
