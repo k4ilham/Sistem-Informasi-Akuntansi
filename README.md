@@ -546,6 +546,33 @@ Setelah menjalankan perintah di atas, Anda dapat melakukan migrasi dengan perint
 
 ### Form Transaksi Pembelian
 
+    //Model Pembelian
+        protected $primaryKey = 'no_beli';
+        public $incrementing = false;
+        protected $keyType = 'string';
+        public $timestamps = false;
+        protected $table = "pembelian";
+        protected $fillable=['no_beli','tgl_beli','no_faktur','total_beli','no_pesan'];
+
+    //Model DetailPembelian
+        protected $primaryKey = 'no_beli';
+        public $incrementing = false;
+        protected $keyType = 'string';
+        public $timestamps = false;
+        protected $table = "detail_pembelian";
+        protected $fillable=['no_beli','kd_brg','qty_beli','sub_beli'];
+
+    //Model Beli
+        protected $primaryKey = 'no_pesan';
+        public $incrementing = false;
+        protected $keyType = 'string';
+        public $timestamps = false;
+        protected $table = "tampil_pemesanan";
+        protected $fillable=['kd_brg','no_pesan','nm_brg','qty_pesan','sub_total'];
+
+    //controller
+        php artisan make:controller PembelianController --resource
+
 ### Faktur Invoice
 
 ## Pertemuan 12
